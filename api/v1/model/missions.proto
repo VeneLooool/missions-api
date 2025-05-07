@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package missions_api.api.v1.model;
+
+option go_package = "github.com/VeneLooool/missions-api/pkg/api/v1/model;model";
+
+import "google/protobuf/timestamp.proto";
+
+enum MissionType {
+  MISSION_TYPE_PATROL = 0;
+  MISSION_TYPE_RESEARCH = 1;
+}
+
+enum MissionStatus {
+  MISSION_STATUS_CREATED = 0;
+  MISSION_STATUS_SCHEDULED = 1;
+  MISSION_STATUS_PENDING = 2;
+  MISSION_STATUS_RUNNING = 3;
+  MISSION_STATUS_ANALYSE = 4;
+  MISSION_STATUS_CANCELED = 5;
+  MISSION_STATUS_WARNING = 6;
+  MISSION_STATUS_FAILED = 7;
+  MISSION_STATUS_SUCCESS = 8;
+}
+
+message Mission {
+  uint64 id = 1;
+  string name = 2;
+  MissionType type = 3;
+  MissionStatus status = 4;
+
+  string created_by = 5;
+  string updated_by = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp started_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+
+  uint64 field_id = 10;
+  uint64 drone_id = 11;
+}

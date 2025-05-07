@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package missions_api.api.v1.missions;
+
+option go_package = "github.com/VeneLooool/missions-api/pkg/api/v1/missions;missions";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "api/v1/model/missions.proto";
+import "api/v1/model/plan.proto";
+import "google/protobuf/timestamp.proto";
+
+service Missions {
+  rpc CreateMission(CreateMission.Request) returns (CreateMission.Response) {
+    option (google.api.http) = {
+      post: "/v1/missions"
+      body: "*"
+    };
+  }
+  rpc UpdateMission(UpdateMission.Request) returns (UpdateMission.Response) {
+    option (google.api.http) = {
+      put: "/v1/missions/{id}"
+      body: "*"
+    };
+  }
+  rpc UpdateMissionStatus(UpdateMissionStatus.Request) returns (UpdateMissionStatus.Response) {
+    option (google.api.http) = {
+      put: "/v1/missions/{id}/status"
+      body: "*"
+    };
+  }
+  rpc GetMissionByID(GetMissionByID.Request) returns (GetMissionByID.Response) {
+    option (google.api.http) = {
+      get: "/v1/missions/{id}"
+    };
+  }
+  rpc GetMissionsByAuthor(GetMissionsByAuthor.Request) returns (GetMissionsByAuthor.Response) {
+    option (google.api.http) = {
+      get: "/v1/missions/authors/{login}"
+    };
+  }
+  rpc DeleteMission(DeleteMission.Request) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/missions/{id}"
+    };
+  }
+  rpc GetMissionsInStatuses(GetMissionsInStatuses.Request) returns (GetMissionsInStatuses.Response) {
+    option (google.api.http) = {
+      post: "/v1/missions/statuses"
+      body: "*"
+    };
+  }
+}
+
+message CreateMission {
+  message Request {
+    string name = 1;
+    model.MissionType type = 2;
+    model.MissionStatus status = 3;
+
+    google.protobuf.Timestamp started_at = 4;
+
+    string created_by = 5;
+
+    uint64 field_id = 6;
+    uint64 drone_id = 7;
+
+    model.Plan plan = 8;
+  }
+  message Response {
+    model.Mission mission = 1;
+  }
+}
+
+message UpdateMission {
+  message Request {
+    uint64 id = 1;
+    string name = 2;
+
+    model.MissionStatus status = 3;
+    google.protobuf.Timestamp started_at = 4;
+
+    string updated_by = 5;
+    model.Plan plan = 6;
+  }
+  message Response {
+    model.Mission mission = 1;
+  }
+}
+
+message UpdateMissionStatus {
+  message Request {
+    uint64 id = 1;
+    model.MissionStatus status = 2;
+  }
+  message Response {
+    model.Mission mission = 1;
+  }
+}
+
+message GetMissionByID {
+  message Request {
+    uint64 id = 1;
+  }
+  message Response {
+    model.Mission mission = 1;
+  }
+}
+
+message GetMissionsByAuthor {
+  message Request {
+    string login = 1;
+  }
+  message Response {
+    repeated model.Mission missions = 1;
+  }
+}
+
+message DeleteMission {
+  message Request {
+    uint64 id = 1;
+  }
+}
+
+message GetMissionsInStatuses {
+  message Request {
+    repeated model.MissionStatus statuses = 1;
+  }
+  message Response {
+    repeated model.Mission missions = 1;
+  }
+}

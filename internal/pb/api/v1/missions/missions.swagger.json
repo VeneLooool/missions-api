@@ -1,0 +1,446 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/missions/missions.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Missions"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/missions": {
+      "post": {
+        "operationId": "Missions_CreateMission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/missionsCreateMissionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/missionsCreateMissionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Missions"
+        ]
+      }
+    },
+    "/v1/missions/authors/{login}": {
+      "get": {
+        "operationId": "Missions_GetMissionsByAuthor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/missionsGetMissionsByAuthorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Missions"
+        ]
+      }
+    },
+    "/v1/missions/statuses": {
+      "post": {
+        "operationId": "Missions_GetMissionsInStatuses",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/missionsGetMissionsInStatusesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/missionsGetMissionsInStatusesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Missions"
+        ]
+      }
+    },
+    "/v1/missions/{id}": {
+      "get": {
+        "operationId": "Missions_GetMissionByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/missionsGetMissionByIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "Missions"
+        ]
+      },
+      "delete": {
+        "operationId": "Missions_DeleteMission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "Missions"
+        ]
+      },
+      "put": {
+        "operationId": "Missions_UpdateMission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/missionsUpdateMissionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/missionsMissionsUpdateMissionBody"
+            }
+          }
+        ],
+        "tags": [
+          "Missions"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "missionsCreateMissionRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/modelMissionType"
+        },
+        "status": {
+          "$ref": "#/definitions/modelMissionStatus"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "fieldId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "droneId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "plan": {
+          "$ref": "#/definitions/modelPlan"
+        }
+      }
+    },
+    "missionsCreateMissionResponse": {
+      "type": "object",
+      "properties": {
+        "mission": {
+          "$ref": "#/definitions/modelMission"
+        }
+      }
+    },
+    "missionsGetMissionByIDResponse": {
+      "type": "object",
+      "properties": {
+        "mission": {
+          "$ref": "#/definitions/modelMission"
+        }
+      }
+    },
+    "missionsGetMissionsByAuthorResponse": {
+      "type": "object",
+      "properties": {
+        "missions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/modelMission"
+          }
+        }
+      }
+    },
+    "missionsGetMissionsInStatusesRequest": {
+      "type": "object",
+      "properties": {
+        "statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/modelMissionStatus"
+          }
+        }
+      }
+    },
+    "missionsGetMissionsInStatusesResponse": {
+      "type": "object",
+      "properties": {
+        "missions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/modelMission"
+          }
+        }
+      }
+    },
+    "missionsMissionsUpdateMissionBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/modelMissionStatus"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "plan": {
+          "$ref": "#/definitions/modelPlan"
+        }
+      }
+    },
+    "missionsUpdateMissionResponse": {
+      "type": "object",
+      "properties": {
+        "mission": {
+          "$ref": "#/definitions/modelMission"
+        }
+      }
+    },
+    "modelCoordinate": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "modelMission": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/modelMissionType"
+        },
+        "status": {
+          "$ref": "#/definitions/modelMissionStatus"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fieldId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "droneId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "modelMissionStatus": {
+      "type": "string",
+      "enum": [
+        "MISSION_STATUS_CREATED",
+        "MISSION_STATUS_SCHEDULED",
+        "MISSION_STATUS_PENDING",
+        "MISSION_STATUS_RUNNING",
+        "MISSION_STATUS_ANALYSE",
+        "MISSION_STATUS_CANCELED",
+        "MISSION_STATUS_WARNING",
+        "MISSION_STATUS_FAILED",
+        "MISSION_STATUS_SUCCESS"
+      ],
+      "default": "MISSION_STATUS_CREATED"
+    },
+    "modelMissionType": {
+      "type": "string",
+      "enum": [
+        "MISSION_TYPE_PATROL",
+        "MISSION_TYPE_RESEARCH"
+      ],
+      "default": "MISSION_TYPE_PATROL"
+    },
+    "modelPlan": {
+      "type": "object",
+      "properties": {
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/modelCoordinate"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

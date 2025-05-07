@@ -1,0 +1,177 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/planner/planner.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Planner"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/planner/mission": {
+      "post": {
+        "operationId": "Planner_CalculateMissionPlan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/plannerCalculateMissionPlanResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/plannerCalculateMissionPlanRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Planner"
+        ]
+      }
+    },
+    "/v1/planner/missions/{missionId}": {
+      "get": {
+        "operationId": "Planner_GetMissionPlanByMissionID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/plannerGetMissionPlanByMissionIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "missionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "Planner"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "modelCoordinate": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "modelMissionType": {
+      "type": "string",
+      "enum": [
+        "MISSION_TYPE_PATROL",
+        "MISSION_TYPE_RESEARCH"
+      ],
+      "default": "MISSION_TYPE_PATROL"
+    },
+    "modelPlan": {
+      "type": "object",
+      "properties": {
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/modelCoordinate"
+          }
+        }
+      }
+    },
+    "plannerCalculateMissionPlanRequest": {
+      "type": "object",
+      "properties": {
+        "missionBorders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/modelCoordinate"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/modelMissionType"
+        }
+      }
+    },
+    "plannerCalculateMissionPlanResponse": {
+      "type": "object",
+      "properties": {
+        "plan": {
+          "$ref": "#/definitions/modelPlan"
+        }
+      }
+    },
+    "plannerGetMissionPlanByMissionIDResponse": {
+      "type": "object",
+      "properties": {
+        "plan": {
+          "$ref": "#/definitions/modelPlan"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

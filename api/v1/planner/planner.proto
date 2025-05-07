@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package missions_api.api.v1.planner;
+
+option go_package = "github.com/VeneLooool/missions-api/pkg/api/v1/planner;planner";
+
+import "google/api/annotations.proto";
+import "api/v1/model/missions.proto";
+import "api/v1/model/plan.proto";
+
+service Planner {
+  rpc CalculateMissionPlan(CalculateMissionPlan.Request) returns (CalculateMissionPlan.Response) {
+    option (google.api.http) = {
+      post: "/v1/planner/mission"
+      body: "*"
+    };
+  }
+  rpc GetMissionPlanByMissionID(GetMissionPlanByMissionID.Request) returns (GetMissionPlanByMissionID.Response) {
+    option (google.api.http) = {
+      get: "/v1/planner/missions/{mission_id}"
+    };
+  }
+}
+
+message CalculateMissionPlan {
+  message Request {
+    repeated model.Coordinate mission_borders = 1;
+    model.MissionType type = 2;
+  }
+  message Response {
+    model.Plan plan = 1;
+  }
+}
+message GetMissionPlanByMissionID {
+  message Request {
+    uint64 mission_id = 1;
+  }
+  message Response {
+    model.Plan plan = 1;
+  }
+}

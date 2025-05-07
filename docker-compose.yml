@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  postgres-missions:
+    image: postgres:15
+    container_name: postgres-missions
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    command: -p ${POSTGRES_PORT}
+
+  missions-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: missions-api
+    restart: on-failure
+    depends_on:
+      - postgres-missions
+    ports:
+      - "${MISSION_HTTP_PORT}:${MISSION_HTTP_PORT}"   # HTTP + Swagger
+      - "${MISSION_GRPC_PORT}:${MISSION_GRPC_PORT}" # gRPC
+    env_file:
+      - .env
+
+volumes:
+  postgres-data:
